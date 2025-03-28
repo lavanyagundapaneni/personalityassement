@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIASEC Personality Test</title>
+    <!-- Include Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-blue-600 mb-2">Personality Assessment</h1>
+        </div>
+
+        <!-- Main Card -->
+        <div class="bg-white rounded-lg shadow-xl px-6 py-6 md:p-8 transition-all duration-300 h-[300px] w-[700px]">
+
+            <!-- Loading State -->
+            
+            <!-- Question State -->
+            <div id="question-container" class="hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6" id="question-text"></h2>
+                    <!-- Progress Indicator -->
+                    <div class="text-green-600 text-sm">
+                        <span id="current-question">0</span> / 48
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <!-- Button Options -->
+                    <div id="button-options" class="flex justify-between mt-10 mb-6">
+                        <button class="option-btn bg-gray-200 text-gray-700 w-8 h-8 rounded-full transition-colors">1</button>
+                        <button class="option-btn bg-gray-200 text-gray-700 w-8 h-8 rounded-full transition-colors">2</button>
+                        <button class="option-btn bg-gray-200 text-gray-700 w-8 h-8 rounded-full transition-colors">3</button>
+                        <button class="option-btn bg-gray-200 text-gray-700 w-8 h-8 rounded-full transition-colors">4</button>
+                        <button class="option-btn bg-gray-200 text-gray-700 w-8 h-8 rounded-full transition-colors">5</button>
+                    </div>
+
+                    <div id="loading" class="hidden text-center py-6">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                    
+                    </div>
+        
+                </div>
+
+                <button id="submit-button" onclick="submitAnswer()" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors mt-8 mb-8">
+                    Submit
+                </button>
+            </div
+
+            <!-- Results State -->
+            <div id="results-container" class="hidden text-center">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-green-600 mb-4">Your Personality Type</h2>
+                    <div id="personality-result" class="text-4xl font-bold text-gray-800"></div>
+                </div>
+                <button onclick="startNewTest()"
+                        class="bg-grey-300 hover:bg-gray-300 text-white-700 px-6 py-2 rounded-lg transition-colors mt-14">
+                    Take Test Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        
+    </div>
+
+    <!-- JavaScript Code -->
+    <script>
+        const API_BASE = 'http://localhost:8000'; // Backend URL
+        let currentQuestionIndex = 0;
+        let selectedResponse = null; // To store the selected response
+
+        async function initializeTest() {
+            try {
+                showLoading(true); // Show loading spinner
+                const response = await fetch(`${API_BASE}/start_test`);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log(data);
+
+                showQuestion(data.next_question);
+                updateProgress();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to start test: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function submitAnswer() {
+            if (selectedResponse === null) {
+                alert("Please select a response before submitting.");
+                return;
+            }
+
+            try {
+                showLoading(true);
+                const result = await fetch(`${API_BASE}/submit_answer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ response: selectedResponse })
+                });
+
+                if (!result.ok) {
+                    throw new Error(`Failed to fetch: ${result.status} ${result.statusText}`);
+                }
+
+                const data = await result.json();
+                
+                if (data.completed) {
+                    showResults(data.personality);
+                } else {
+                    showQuestion(data.next_question);
+                    updateProgress();
+                    
+                    // Change button text if it's the last question
+                    if (currentQuestionIndex === 47) { // Index 47 corresponds to the 48th question
+                        document.getElementById('submit-button').textContent = 'Submit';
+                    }
+                    
+                    // Reset selected response for next question
+                    selectedResponse = null;
+                    resetButtonStyles();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to submit answer: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showQuestion(question) {
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('question-text').textContent = question;
+        }
+
+        function showResults(personality) {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            document.getElementById('personality-result').textContent = personality;
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('hidden', !show);
+        }
+
+        function updateProgress() {
+            currentQuestionIndex++;
+            document.getElementById('current-question').textContent = currentQuestionIndex;
+        }
+
+        function startNewTest() {
+            currentQuestionIndex = 0;
+            document.getElementById('current-question').textContent = '0';
+            initializeTest();
+        }
+
+        // Function to reset button styles
+        function resetButtonStyles() {
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('bg-green-500', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+        }
+
+        // Add event listeners for button clicks
+        document.querySelectorAll('.option-btn').forEach((button, index) => {
+            button.addEventListener('click', function () {
+                // Set selected response based on button index (0-indexed)
+                selectedResponse = index + 1; // Convert to 1-based response
+
+                // Reset all buttons to default color
+                resetButtonStyles();
+
+                // Change clicked button's color to green
+                this.classList.remove('bg-gray-200', 'text-gray-700');
+                this.classList.add('bg-green-500', 'text-white');
+            });
+        });
+
+        // Initialize test when page loads
+        window.onload = initializeTest;
+    </script>
+</body>
+</html>
