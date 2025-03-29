@@ -1,5 +1,5 @@
 # Personality Assessment AI Agent
-## Overview
+
 This project is an AI-based personality assessment agent built using FastAPI and OpenAI's GPT-4 Turbo model. The agent conducts a RIASEC personality test by presenting predefined questions to the user and analyzing their responses to determine their dominant personality type.
 
 ## Technologies Used
