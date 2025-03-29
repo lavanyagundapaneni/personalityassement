@@ -45,12 +45,10 @@ This project is an AI-based personality assessment agent built using FastAPI and
 1. Clone Repository
    ```
    git clone https://github.com/your-repo/personality-assessment-agent.git
-   cd personality-assessment-agent
-  ```
+   cd personality-assessment-agent ```
 2. Install dependencies
    ```
-   pip install -r requirements.txt
-   ```
+   pip install -r requirements.txt```
 3. Set up environment variables
   ```
    OPENAI_API_KEY=your_openai_api_key_here
