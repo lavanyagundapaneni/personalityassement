@@ -12,3 +12,26 @@ This project is an AI-based personality assessment agent built using FastAPI and
 * **Dotenv** (Environment variable management)
 
 * **CORS Middleware** (For handling cross-origin requests)
+
+## Features
+* Conducts a RIASEC personality test
+
+* 48 predefined questions mapped to six personality types:
+
+ Realistic
+
+ Investigative
+
+ Artistic
+
+ Social
+
+ Enterprising
+
+ Conventional
+
+* Collects user responses on a scale from 1 to 5
+
+* Processes responses to calculate the dominant personality type
+
+* Uses OpenAI's GPT-4 Turbo to analyze and determine the final personality type
