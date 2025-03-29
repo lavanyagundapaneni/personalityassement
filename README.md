@@ -55,4 +55,14 @@ This project is an AI-based personality assessment agent built using FastAPI and
 
 4. Run the FastAPI server
 ```uvicorn main:app --reload --host 0.0.0.0 --port 8000 ```
+
+## How it Works
+
+1.The user starts the test by calling `/start_test`.
+
+2.The API presents a question and records responses via `/submit_answer`.
+
+3. Once all questions are answered, the agent processes the scores and determines the dominant personality type using OpenAI's GPT-4 Turbo.
+
+4.The final result is returned in JSON format.
   
