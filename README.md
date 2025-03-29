@@ -18,17 +18,17 @@ This project is an AI-based personality assessment agent built using FastAPI and
 
 * 48 predefined questions mapped to six personality types:
 
- Realistic
+       Realistic
 
- Investigative
+       Investigative
 
- Artistic
+       Artistic
 
- Social
+       Social
 
- Enterprising
+       Enterprising
 
- Conventional
+       Conventional
 
 * Collects user responses on a scale from 1 to 5
 
