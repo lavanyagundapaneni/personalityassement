@@ -42,8 +42,11 @@ This project is an AI-based personality assessment agent built using FastAPI and
 * An OpenAI API key
 
 ### 2. Setup Instructions
-1. Clone Repository:
-   ``` git clone https://github.com/your-repo/personality-assessment-agent.git
-       cd personality-assessment-agent ```
+1. Clone Repository
+   ```
+   git clone https://github.com/your-repo/personality-assessment-agent.git
+   cd personality-assessment-agent
+ 
+  ```
    
   
