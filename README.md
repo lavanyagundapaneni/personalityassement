@@ -35,3 +35,7 @@ This project is an AI-based personality assessment agent built using FastAPI and
 * Processes responses to calculate the dominant personality type
 
 * Uses OpenAI's GPT-4 Turbo to analyze and determine the final personality type
+
+## Installation
+1. ### Prerequisites
+  
