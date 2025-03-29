@@ -37,5 +37,7 @@ This project is an AI-based personality assessment agent built using FastAPI and
 * Uses OpenAI's GPT-4 Turbo to analyze and determine the final personality type
 
 ## Installation
-1. ### Prerequisites
+### 1. Prerequisites 
+* Python 3.8+
+* An OpenAI API key
   
