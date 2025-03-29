@@ -48,11 +48,11 @@ This project is an AI-based personality assessment agent built using FastAPI and
    cd personality-assessment-agent
     ```
 2. Install dependencies
+ ```pip install -r requirements.txt  ```
 
-   ```pip install -r requirements.txt  ```
-4. Set up environment variables
-  
+3. Set up environment variables
   ```OPENAI_API_KEY=your_openai_api_key_here ```
+
 4. Run the FastAPI server
 ```uvicorn main:app --reload --host 0.0.0.0 --port 8000 ```
   
